@@ -16,7 +16,7 @@ def main():
 
     for i, row in enumerate(rows):
         yf_data = yahoo_finance_data(row[0])
-        write_cell_value(sheet_meta, 'C', 2+i, yf_data['dividend'])
+        write_cell_value(sheet_meta, 'C', 2+i, yf_data['dividend_value'])
 
 
 if __name__ == '__main__':
