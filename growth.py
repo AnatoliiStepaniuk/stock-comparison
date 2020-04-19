@@ -1,5 +1,6 @@
 from scipy import stats
 from scipy.optimize import curve_fit
+import math
 
 
 def exp_func(x, a, b, c):
@@ -11,7 +12,8 @@ def linear_to_exp_growth(y):
     slope, intercept, r_value, p_value, std_err = stats.linregress(range(len(y)), y)
     start = slope * 0 + intercept
     finish = slope * (len(y)-1) + intercept
-    return (finish / start) ** (1 / len(y))
+    result = (finish / start) ** (1 / len(y))
+    return result if not math.isnan(result) else "N/A"
 
 
 def exp_growth(y):

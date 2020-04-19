@@ -66,7 +66,10 @@ def _payout_ratio(js):
 
 
 def _debt(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']['raw']
+    if 'raw' in js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']:
+        return js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']['raw']
+    else:
+        return "N/A"
 
 
 def _sales_growth(js):
