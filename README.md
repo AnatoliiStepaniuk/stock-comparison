@@ -1,3 +1,8 @@
+This tool will aggregate core financial indicators of companies for convenient comparison.
+Example:
+![](demo.jpg)
+
+
 Place `credentials.json` file into project's root.
 
 Install dependencies with:
