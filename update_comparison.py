@@ -40,7 +40,7 @@ def main():
     sheet = sheets_client()
     shm = SheetMeta(sheet, SPREADSHEET_ID, SHEET_NAME)
 
-    write_company_info(shm, 'MO', 'D')
+    write_company_info(shm, 'MO', 'C')
 
 
 if __name__ == '__main__':

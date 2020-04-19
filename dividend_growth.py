@@ -1,27 +1,13 @@
 import yfinance as yf
-from datetime import date
 from scipy.optimize import curve_fit
 
+from growth import exp_growth
 from sheets_client import sheets_client
-from sheet_utils import write_cell_value
-from sheet_utils import SheetMeta
-
-
-# TODO for each dividend d, update multiplier
-# TODO multiply dividend by multiplier and add to dividends of this year
-# TODO result = yearly real dividend paid
-
-# TODO when performing regression, use year starting from 0
-
-
-def exp_func(x, a, b, c):
-    return c * (a ** x) + b
 
 
 def dividend_growth(year_from, year_to):
     dividends, years = yearly_real_dividend(year_from, year_to)
-    popt, pcov = curve_fit(exp_func, range(0, len(dividends)), dividends)
-    return popt[0]
+    return exp_growth(dividends)
 
 
 def yearly_real_dividend(year_from, year_to):
@@ -76,6 +62,5 @@ def write_real_dividends(sheet_id, page_name):
                                     valueInputOption='RAW', body=body).execute()
 
 
-#write_real_dividends('1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU', 'Sheet8')
-
+# write_real_dividends('1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU', 'Sheet8')
 print(dividend_growth(1962, 2006))

@@ -1,6 +1,6 @@
 import json
 import requests
-from growth import growth
+from growth import linear_to_exp_growth
 
 
 def yahoo_finance_data(ticker):
@@ -73,14 +73,21 @@ def _sales_growth(js):
     revenues = []
     for e in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']:
         revenues.append(e['revenue']['raw'])
-    return growth(revenues)
+    return linear_to_exp_growth(revenues)
 
 
 def _net_income_growth(js):
     earnings = []
     for e in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']:
         earnings.append(e['earnings']['raw'])
-    return growth(earnings)
+    return linear_to_exp_growth(earnings)
+
+
+def _equity_growth(bs_js):
+    equity = []
+    for e in reversed(bs_js['context']['dispatcher']['stores']['QuoteSummaryStore']['balanceSheetHistory']['balanceSheetStatements']):
+        equity.append(e['totalStockholderEquity']['raw'])
+    return linear_to_exp_growth(equity)
 
 
 def _net_income(js):
@@ -91,10 +98,3 @@ def _net_income(js):
 def _equity(bs_js):
     return bs_js['context']['dispatcher']['stores']['QuoteSummaryStore']['balanceSheetHistory']['balanceSheetStatements'][0][
         'totalStockholderEquity']['raw']
-
-
-def _equity_growth(bs_js):
-    equity = []
-    for e in reversed(bs_js['context']['dispatcher']['stores']['QuoteSummaryStore']['balanceSheetHistory']['balanceSheetStatements']):
-        equity.append(e['totalStockholderEquity']['raw'])
-    return growth(equity)
