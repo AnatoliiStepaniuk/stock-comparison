@@ -5,11 +5,20 @@ class SheetMeta:
         self.page_name = page_name
 
 
-def write_cell_value(sheet_meta, column, row, value):
+def write_cell(shm, column, row, value):
     cell = column + str(row)
-    cell_full = sheet_meta.page_name + "!" + cell + ":" + cell
-    body = {'values': [[value]]}
-    sheet_meta.sheet_client.values().update(spreadsheetId=sheet_meta.document_id, range=cell_full, valueInputOption='RAW', body=body).execute()
+    write_batch(shm, cell, cell, [[value]])
+
+
+def write_batch(shm, cell_from, cell_to, values):
+    cell_range = shm.page_name + "!" + cell_from + ":" + cell_to
+    body = {'values': values}
+    shm.sheet_client.values().update(spreadsheetId=shm.document_id, range=cell_range, valueInputOption='RAW', body=body).execute()
+
+
+def col_to_let(index):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    return alphabet[index]
 
 
 def create_spread_sheet(client, spreadsheet_title, sheet_title):
@@ -48,4 +57,3 @@ def make_first_row_bold(client, spreadsheet_id, sheet_id):
     }
 
     client.batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
-

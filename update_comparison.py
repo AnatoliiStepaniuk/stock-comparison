@@ -1,47 +1,67 @@
 from __future__ import print_function
 from yahoo_finance_data import yahoo_finance_data
 from sheets_client import sheets_client
-from sheet_utils import write_cell_value
-from sheet_utils import SheetMeta
+from sheet_utils import *
+from yf_data_utils import *
 
 SPREADSHEET_ID = '1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU'
-SHEET_NAME = 'Sin stocks'
-
-TICKER_ROW = 1
-STARTING_YIELD_ROW = 3
-MARKET_CAP_ROW = 4
-SALES_GROWTH_ROW = 5
-NET_INCOME_GROWTH_ROW = 6
-EQUITY_GROWTH_ROW = 7
-PROFIT_MARGIN_ROW = 8
-PAYOUT_RATIO_ROW = 9
-ROE_ROW = 10
-DEBT_TO_EQUITY_ROW = 11
-PRICE_TO_EARNINGS_ROW = 12
-DEBT_REPAY_YEARS_ROW = 13
+SHEET_NAME = 'Food'
 
 
-def write_company_info(shm, ticker, col):
-    yf_data = yahoo_finance_data(ticker)
-    write_cell_value(shm, col, TICKER_ROW, ticker)
-    write_cell_value(shm, col, STARTING_YIELD_ROW, yf_data['dividend_return'])
-    write_cell_value(shm, col, MARKET_CAP_ROW, yf_data['market_cap'])
-    write_cell_value(shm, col, SALES_GROWTH_ROW, yf_data['sales_growth'])
-    write_cell_value(shm, col, NET_INCOME_GROWTH_ROW, yf_data['net_income_growth'])
-    write_cell_value(shm, col, EQUITY_GROWTH_ROW, yf_data['equity_growth'])
-    write_cell_value(shm, col, PROFIT_MARGIN_ROW, yf_data['profit_margin'])
-    write_cell_value(shm, col, PAYOUT_RATIO_ROW, yf_data['payout_ratio'])
-    write_cell_value(shm, col, ROE_ROW, yf_data['net_income'] / yf_data['equity'])
-    write_cell_value(shm, col, DEBT_TO_EQUITY_ROW, yf_data['debt'] / yf_data['equity'])
-    write_cell_value(shm, col, PRICE_TO_EARNINGS_ROW, yf_data['price'] / yf_data['eps'])
-    write_cell_value(shm, col, DEBT_REPAY_YEARS_ROW, yf_data['debt'] / yf_data['net_income'])
+def report_batch(shm, page_name, tickers):
+    shm.page_name = page_name
+    write_row_names(shm)
+    write_data(shm, tickers)
+
+
+def write_row_names(shm):
+    rows = list(map(lambda a: [a], ROW_FUNCTIONS))
+    write_batch(shm, 'A2', 'A' + str(len(ROW_FUNCTIONS)+1), rows)
+
+
+def write_data(shm, tickers):
+    infos = []
+    for ticker in tickers:
+        infos.append(yahoo_finance_data(ticker))
+
+    rows = [tickers]
+    functions = [dividend_return, market_cap, sales_growth, net_income_growth, equity_growth, profit_margin, payout_ratio, roe, debt_to_equity, price_to_earnings, debt_repay_years]
+    for f in functions:
+        rows.append(get_row(infos, f))
+
+    col_start = 1
+    row_start = 1
+    cell_from = col_to_let(col_start) + str(row_start)
+    cell_to = col_to_let(col_start + len(tickers)) + str(row_start + len(functions))
+
+    write_batch(shm, cell_from, cell_to, rows)
+
+
+def get_row(infos, func):
+    row = []
+    for info in infos:
+        row.append(func(info))
+    return row
+
 
 def main():
     sheet = sheets_client()
     shm = SheetMeta(sheet, SPREADSHEET_ID, SHEET_NAME)
 
-    write_company_info(shm, 'MO', 'C')
+    report_batch(shm, 'Food', ['PEP'])
+    # report_batch(shm, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
+    exit()
+    report_batch(shm, 'Household', ['JNJ', 'KMB', 'CLX', 'PG', 'UL', 'CL'])
 
+    report_batch(shm, 'Restaurants', ['MCD', 'SBUX'])
+
+    report_batch(shm, 'Healthcare', ['JNJ', 'PFE', 'ABBV'])
+
+    report_batch(shm, 'Sin stocks', ['MO', 'BTI', 'PM', 'UVV'])
+
+    report_batch(shm, 'Tech', ['IBM', 'APPL', 'MSFT'])
+
+    report_batch(shm, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO'])
 
 if __name__ == '__main__':
     main()

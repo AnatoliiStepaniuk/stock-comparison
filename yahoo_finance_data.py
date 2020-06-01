@@ -5,10 +5,10 @@ from growth import linear_to_exp_growth
 
 def yahoo_finance_data(ticker):
     resp = requests.get('https://finance.yahoo.com/quote/' + ticker)
-    js = json.loads(get_json(resp.text))
+    js = json.loads(_get_json(resp.text))
 
     bs_resp = requests.get('https://finance.yahoo.com/quote/' + ticker + '/balance-sheet?p=' + ticker)
-    bs_js = json.loads(get_json(bs_resp.text))
+    bs_js = json.loads(_get_json(bs_resp.text))
     return {
         "eps": _eps(js),
         "price": _price(js),
@@ -26,12 +26,12 @@ def yahoo_finance_data(ticker):
     }
 
 
-def get_json(input):
+def _get_json(inp):
     start_str = 'root.App.main = '
     finish_str = '}(this))'
-    index_from = input.index(start_str) + len(start_str)
-    index_to = input.index(finish_str)-2
-    return input[index_from: index_to]
+    index_from = inp.index(start_str) + len(start_str)
+    index_to = inp.index(finish_str) - 2
+    return inp[index_from: index_to]
 
 
 def _price(js):
@@ -39,15 +39,18 @@ def _price(js):
 
 
 def _eps(js): #TODO improve with Consensus Estimate?
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']['forwardEps']['raw']
+    eps = js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']['forwardEps']
+    return eps['raw'] if 'raw' in eps else 'N/A'
 
 
 def _dividend_value(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendRate']['raw']
+    dividend = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendRate']
+    return dividend['raw'] if 'raw' in dividend else 'N/A'
 
 
 def _dividend_return(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendYield']['raw']
+    dividend_return = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendYield']
+    return dividend_return['raw'] if 'raw' in dividend_return else 'N/A'
 
 
 def _market_cap(js):
@@ -59,17 +62,13 @@ def _profit_margin(js):
 
 
 def _payout_ratio(js):
-    if 'raw' in js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['payoutRatio']:
-        return js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['payoutRatio']['raw']
-    else:
-        return "N/A"
+    payout_ratio =  js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['payoutRatio']
+    return payout_ratio['raw'] if 'raw' in payout_ratio else 'N/A'
 
 
 def _debt(js):
-    if 'raw' in js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']:
-        return js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']['raw']
-    else:
-        return "N/A"
+    debt = js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']['totalDebt']
+    return debt['raw'] if 'raw' in debt else 'N/A'
 
 
 def _sales_growth(js):
@@ -95,7 +94,8 @@ def _equity_growth(bs_js):
 
 def _net_income(js):
     arr = js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']
-    return arr[len(arr)-1]['earnings']['raw']
+    earnings = arr[len(arr)-1]['earnings']
+    return earnings['raw'] if 'raw' in earnings else earnings
 
 
 def _equity(bs_js):
