@@ -5,7 +5,7 @@ from sheet_utils import *
 from yf_data_utils import *
 
 SPREADSHEET_ID = '1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU'
-SHEET_NAME = 'Food'
+SHEET_NAME = 'Tech Giants'
 
 
 def report_batch(shm, page_name, tickers):

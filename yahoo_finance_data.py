@@ -35,34 +35,55 @@ def _get_json(inp):
 
 
 def _price(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['price']['regularMarketPrice']['raw']
+    regular_price = js['context']['dispatcher']['stores']['QuoteSummaryStore']['price']['regularMarketPrice']
+    return regular_price['raw'] if 'raw' in regular_price else 'N/A'
 
 
 def _eps(js): #TODO improve with Consensus Estimate?
-    eps = js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']['forwardEps']
+    default_key_statistics = js['context']['dispatcher']['stores']['QuoteSummaryStore']
+    if 'forwardEps' not in default_key_statistics:
+        return 'N/A'
+    eps = default_key_statistics['forwardEps']
     return eps['raw'] if 'raw' in eps else 'N/A'
 
 
 def _dividend_value(js):
-    dividend = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendRate']
+    summary = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']
+    if 'dividendRate' not in summary:
+        return 'N/A'
+    dividend = summary['dividendRate']
     return dividend['raw'] if 'raw' in dividend else 'N/A'
 
 
 def _dividend_return(js):
-    dividend_return = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['dividendYield']
+    summary = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']
+    if 'dividendYield' not in summary:
+        return 'N/A'
+    dividend_return = summary['dividendYield']
     return dividend_return['raw'] if 'raw' in dividend_return else 'N/A'
 
 
 def _market_cap(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['marketCap']['raw']
+    summary = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']
+    if 'marketCap' not in summary:
+        return 'N/A'
+    market_cap = summary['marketCap']
+    return market_cap['raw'] if 'raw' in market_cap else 'N/A'
 
 
 def _profit_margin(js):
-    return js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']['profitMargins']['raw']
+    default_key_stats = js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']
+    if 'profitMargins' not in default_key_stats:
+        return 'N/A'
+    profit_margins = default_key_stats['profitMargins']
+    return profit_margins['raw'] if 'raw' in profit_margins else 'N/A'
 
 
 def _payout_ratio(js):
-    payout_ratio =  js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']['payoutRatio']
+    summary = js['context']['dispatcher']['stores']['QuoteSummaryStore']['summaryDetail']
+    if 'payoutRatio' not in summary:
+        return 'N/A'
+    payout_ratio = summary['payoutRatio']
     return payout_ratio['raw'] if 'raw' in payout_ratio else 'N/A'
 
 
