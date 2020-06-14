@@ -3,6 +3,7 @@ from yahoo_finance_data import yahoo_finance_data
 from sheets_client import sheets_client
 from sheet_utils import *
 from yf_data_utils import *
+from div_growth import div_growth
 
 SPREADSHEET_ID = '1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU'
 SHEET_NAME = 'Tech Giants'
@@ -48,11 +49,12 @@ def main():
     sheet = sheets_client()
     shm = SheetMeta(sheet, SPREADSHEET_ID, SHEET_NAME)
 
-    report_batch(shm, 'Tech Giants', ['MSFT', 'GOOG', 'AMZN'])
-    exit()
-    report_batch(shm, 'Food', ['PEP'])
+    # report_batch(shm, 'Food', ['PEP', 'KO'])
     # report_batch(shm, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
+
+    report_batch(shm, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO', 'MCD'])
     exit()
+
     report_batch(shm, 'Household', ['JNJ', 'KMB', 'CLX', 'PG', 'UL', 'CL'])
 
     report_batch(shm, 'Restaurants', ['MCD', 'SBUX'])

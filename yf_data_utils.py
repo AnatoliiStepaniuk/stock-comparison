@@ -2,6 +2,10 @@ def dividend_return(yfd):
     return yfd['dividend_return']
 
 
+def dividend_growth(yfd):
+    return yfd['dividend_growth']
+
+
 def market_cap(yfd):
     return round(yfd['market_cap']/10**9, 0)
 
@@ -15,7 +19,7 @@ def net_income_growth(yfd):
 
 
 def net_income(yfd):
-    return round(yfd['net_income']/10**9, 0)
+    return round(yfd['net_income']/10**9, 2)
 
 
 def equity_growth(yfd):
@@ -46,8 +50,9 @@ def debt_repay_years(yfd):
     return round(yfd['debt'] / yfd['net_income'], 1) if yfd['debt'] != 'N/A' and yfd['net_income'] != 'N/A' else 'N/A'
 
 
-market_cap_key = 'Market cap'
-net_income_key = 'Net income'
+market_cap_key = 'Market cap, B'
+net_income_key = 'Net income, B'
+dividend_growth_key = 'Dividend growth'
 dividend_return_key = 'Dividend yield'
 sales_growth_key = 'Sales growth'
 net_income_growth_key = 'Net income growth'
@@ -62,6 +67,7 @@ debt_repay_years_key = 'Debt repay, yrs'
 ROW_FUNCTIONS = {
     market_cap_key: market_cap,
     net_income_key: net_income,
+    dividend_growth_key: dividend_growth,
     dividend_return_key: dividend_return,
     sales_growth_key: sales_growth,
     net_income_growth_key: net_income_growth,

@@ -1,6 +1,10 @@
 import json
 import requests
 from growth import linear_to_exp_growth
+from div_growth import div_growth
+
+
+LAST_DIVIDEND_GROWTH_YEARS = 10
 
 
 def yahoo_finance_data(ticker):
@@ -14,6 +18,7 @@ def yahoo_finance_data(ticker):
         "price": _price(js),
         "dividend_value": _dividend_value(js),
         "dividend_return": _dividend_return(js),
+        "dividend_growth": 'N/A' if _dividend_return(js) == 'N/A' else div_growth(ticker, LAST_DIVIDEND_GROWTH_YEARS),
         "market_cap": _market_cap(js),
         "profit_margin": _profit_margin(js),
         "payout_ratio": _payout_ratio(js),
