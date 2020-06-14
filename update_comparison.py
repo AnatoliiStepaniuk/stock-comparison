@@ -25,7 +25,7 @@ def write_data(shm, tickers):
         infos.append(yahoo_finance_data(ticker))
 
     rows = [tickers]
-    functions = [dividend_return, market_cap, sales_growth, net_income_growth, equity_growth, profit_margin, payout_ratio, roe, debt_to_equity, price_to_earnings, debt_repay_years]
+    functions = ROW_FUNCTIONS.values()
     for f in functions:
         rows.append(get_row(infos, f))
 
@@ -48,6 +48,8 @@ def main():
     sheet = sheets_client()
     shm = SheetMeta(sheet, SPREADSHEET_ID, SHEET_NAME)
 
+    report_batch(shm, 'Tech Giants', ['MSFT', 'GOOG', 'AMZN'])
+    exit()
     report_batch(shm, 'Food', ['PEP'])
     # report_batch(shm, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
     exit()
