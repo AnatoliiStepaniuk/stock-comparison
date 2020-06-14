@@ -21,17 +21,62 @@ def col_to_let(index):
     return alphabet[index]
 
 
-def create_spread_sheet(client, spreadsheet_title, sheet_title):
+def create_spread_sheet(client, spreadsheet_title):
     body = {
-        'properties': {'title': spreadsheet_title},
-        'sheets': [
+        'properties': {'title': spreadsheet_title}
+    }
+
+    return client.create(body=body).execute().get('spreadsheetId')
+
+
+def add_sheet(u, sheet_id, sheet_name):
+    client = u[0]
+    spreadsheet_id = u[1]
+    body = {
+        "requests": [
             {
-                'properties': {'title': sheet_title}
+                "addSheet": {
+                    "properties": {
+                        "sheetId": sheet_id,
+                        "title": sheet_name
+                    }
+                }
+            }
+        ]
+    }
+    client.batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
+
+
+def format_percent(u, sheet_id, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex):
+    client = u[0]
+    spreadsheet_id = u[1]
+
+    body = {
+        "requests": [
+            {
+                "repeatCell": {
+                    "cell": {
+                        "userEnteredFormat": {
+                            "numberFormat": {
+                                "type": 'PERCENT',
+                                "pattern": '##.##%'
+                            }
+                        }
+                    },
+                    "range": {
+                        "sheetId": sheet_id,
+                        "startRowIndex": startRowIndex,
+                        "endRowIndex": endRowIndex,
+                        "startColumnIndex": startColumnIndex,
+                        "endColumnIndex": endColumnIndex
+                    },
+                    "fields": "userEnteredFormat.numberFormat"
+                }
             }
         ]
     }
 
-    return client.create(body=body).execute()
+    client.batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
 
 def make_first_row_bold(client, spreadsheet_id, sheet_id):
