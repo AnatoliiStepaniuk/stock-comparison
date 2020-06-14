@@ -3,8 +3,8 @@ from scipy.optimize import curve_fit
 import math
 
 
-def exp_func(x, a, b, c):
-    return c * (a ** x) + b
+def exp_func(x, a, b):
+    return b * (a ** x)
 
 
 # Accepts array of yearly values and returns percentage of yearly growth
@@ -17,5 +17,5 @@ def linear_to_exp_growth(y):
 
 
 def exp_growth(y):
-    popt, pcov = curve_fit(exp_func, range(0, len(y)), y)
+    popt, pcov = curve_fit(exp_func, range(1, len(y)+1), y)
     return popt[0]
