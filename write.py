@@ -3,14 +3,18 @@ from yahoo_finance_data import yahoo_finance_data
 from sheets_client import sheets_client
 from sheet_utils import *
 from yf_data_utils import *
-from div_growth import div_growth
 
 SPREADSHEET_ID = '1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU'
 SHEET_NAME = 'Tech Giants'
 
+page_counter = 0
 
-def report_batch(shm, page_name, tickers):
-    shm.page_name = page_name
+
+def write(u, page, tickers):
+    global page_counter
+    page_counter += 1
+    add_sheet(u, page_counter, page)
+    shm = SheetMeta(u[0], u[1], page)
     write_row_names(shm)
     write_data(shm, tickers)
 
@@ -46,26 +50,16 @@ def get_row(infos, func):
 
 
 def main():
-    sheet = sheets_client()
-    shm = SheetMeta(sheet, SPREADSHEET_ID, SHEET_NAME)
+    client = sheets_client()
+    u = client, SPREADSHEET_ID
 
-    # report_batch(shm, 'Food', ['PEP', 'KO'])
-    # report_batch(shm, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
-
-    report_batch(shm, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO', 'MCD'])
-    exit()
-
-    report_batch(shm, 'Household', ['JNJ', 'KMB', 'CLX', 'PG', 'UL', 'CL'])
-
-    report_batch(shm, 'Restaurants', ['MCD', 'SBUX'])
-
-    report_batch(shm, 'Healthcare', ['JNJ', 'PFE', 'ABBV'])
-
-    report_batch(shm, 'Sin stocks', ['MO', 'BTI', 'PM', 'UVV'])
-
-    report_batch(shm, 'Tech', ['IBM', 'APPL', 'MSFT'])
-
-    report_batch(shm, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO'])
+    write(u, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
+    write(u, 'Household', ['JNJ', 'KMB', 'CLX', 'PG', 'UL', 'CL'])
+    write(u, 'Restaurants', ['MCD', 'SBUX'])
+    write(u, 'Healthcare', ['JNJ', 'PFE', 'ABBV'])
+    write(u, 'Sin stocks', ['MO', 'BTI', 'PM', 'UVV'])
+    write(u, 'Tech', ['IBM', 'AAPL', 'MSFT'])
+    write(u, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO'])
 
 if __name__ == '__main__':
     main()
