@@ -18,7 +18,7 @@ def write(u, page, tickers):
     write_row_names(shm)
     write_data(shm, tickers)
     format_percent(u, page_counter, 1, 7, 1, len(tickers)+1)
-    format_percent(u, page_counter, 11, 14, 1, len(tickers)+1)
+    format_percent(u, page_counter, 11, 13, 1, len(tickers)+1)
 
 
 def write_row_names(shm):

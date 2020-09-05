@@ -45,10 +45,22 @@ def _price(js):
 
 
 def _eps(js): #TODO improve with Consensus Estimate?
-    default_key_statistics = js['context']['dispatcher']['stores']['QuoteSummaryStore']
+    return _trailingEps(js) if _forwardEps(js) == 'N/A' else _forwardEps(js)
+
+
+def _forwardEps(js):
+    default_key_statistics = js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']
     if 'forwardEps' not in default_key_statistics:
         return 'N/A'
     eps = default_key_statistics['forwardEps']
+    return eps['raw'] if 'raw' in eps else 'N/A'
+
+
+def _trailingEps(js):
+    default_key_statistics = js['context']['dispatcher']['stores']['QuoteSummaryStore']['defaultKeyStatistics']
+    if 'trailingEps' not in default_key_statistics:
+        return 'N/A'
+    eps = default_key_statistics['trailingEps']
     return eps['raw'] if 'raw' in eps else 'N/A'
 
 
