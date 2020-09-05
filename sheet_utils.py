@@ -79,6 +79,42 @@ def format_percent(u, sheet_id, startRowIndex, endRowIndex, startColumnIndex, en
     client.batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
 
+def format_white_text_color(u, sheet_id, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex):
+    client = u[0]
+    spreadsheet_id = u[1]
+
+    body = {
+        "requests": [
+            {
+                "repeatCell": {
+                    "cell": {
+                        "userEnteredFormat": {
+                            "textFormat": {
+                                "foregroundColor": {
+                                    "red": 1,
+                                    "green": 1,
+                                    "blue": 1,
+                                    "alpha": 1
+                                }
+                            }
+                        }
+                    },
+                    "range": {
+                        "sheetId": sheet_id,
+                        "startRowIndex": startRowIndex,
+                        "endRowIndex": endRowIndex,
+                        "startColumnIndex": startColumnIndex,
+                        "endColumnIndex": endColumnIndex
+                    },
+                    "fields": "userEnteredFormat.textFormat"
+                }
+            }
+        ]
+    }
+
+    client.batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
+
+
 def make_first_row_bold(client, spreadsheet_id, sheet_id):
     body = {
         "requests": [
