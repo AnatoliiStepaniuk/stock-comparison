@@ -65,17 +65,17 @@ price_to_earnings_key = 'Price/Earnings'
 debt_repay_years_key = 'Debt repay, yrs'
 
 ROW_FUNCTIONS = {
-    market_cap_key: market_cap,
-    net_income_key: net_income,
-    dividend_growth_key: dividend_growth,
-    dividend_return_key: dividend_return,
+    profit_margin_key: profit_margin,
     sales_growth_key: sales_growth,
     net_income_growth_key: net_income_growth,
     equity_growth_key: equity_growth,
-    profit_margin_key: profit_margin,
-    payout_ratio_key: payout_ratio,
     roe_key: roe,
+    dividend_growth_key: dividend_growth,
+    debt_repay_years_key: debt_repay_years,
+    net_income_key: net_income,
+    market_cap_key: market_cap,
     debt_to_equity_key: debt_to_equity,
-    price_to_earnings_key: price_to_earnings,
-    debt_repay_years_key: debt_repay_years
+    payout_ratio_key: payout_ratio,
+    dividend_return_key: dividend_return,
+    price_to_earnings_key: price_to_earnings
 }

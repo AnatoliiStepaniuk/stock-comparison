@@ -17,7 +17,8 @@ def write(u, page, tickers):
     shm = SheetMeta(u[0], u[1], page)
     write_row_names(shm)
     write_data(shm, tickers)
-    format_percent(u, page_counter, 3, 11, 1, len(tickers)+1)
+    format_percent(u, page_counter, 1, 7, 1, len(tickers)+1)
+    format_percent(u, page_counter, 11, 14, 1, len(tickers)+1)
 
 
 def write_row_names(shm):
