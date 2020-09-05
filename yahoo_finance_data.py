@@ -89,7 +89,8 @@ def _payout_ratio(js):
     if 'payoutRatio' not in summary:
         return 'N/A'
     payout_ratio = summary['payoutRatio']
-    return payout_ratio['raw'] if 'raw' in payout_ratio else 'N/A'
+    payout = payout_ratio['raw'] if 'raw' in payout_ratio else 'N/A'
+    return 'N/A' if payout == 0 else payout
 
 
 def _debt(js):
