@@ -38,4 +38,5 @@ def div_growth(ticker, last_years):
             yearly_dividends[year] = 0
         yearly_dividends[year] += div
 
-    return exp_growth(list(yearly_dividends.values())[-last_years:]) - 1
+    growth = exp_growth(list(yearly_dividends.values())[-last_years:])
+    return growth - 1 if growth != "N/A" else "N/A"
