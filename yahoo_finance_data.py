@@ -127,6 +127,8 @@ def _net_income_growth(js):
 def _equity_growth(bs_js):
     equity = []
     for e in reversed(bs_js['context']['dispatcher']['stores']['QuoteSummaryStore']['balanceSheetHistory']['balanceSheetStatements']):
+        if 'totalStockholderEquity' not in e:
+            return "N/A"
         equity.append(e['totalStockholderEquity']['raw'])
     return linear_to_exp_growth(equity)
 
