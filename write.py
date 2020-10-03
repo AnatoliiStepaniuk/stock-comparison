@@ -1,11 +1,7 @@
 from __future__ import print_function
 from yahoo_finance_data import yahoo_finance_data
-from sheets_client import sheets_client
 from sheet_utils import *
 from yf_data_utils import *
-
-SPREADSHEET_ID = '1xkagdDVgoacqYoUw_7yQ7rJUTDj8YOAFN8TRavh_sCU'
-SHEET_NAME = 'Tech Giants'
 
 page_counter = 0
 
@@ -51,18 +47,3 @@ def get_row(infos, func):
         row.append(func(info))
     return row
 
-
-def main():
-    client = sheets_client()
-    u = client, SPREADSHEET_ID
-
-    write(u, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])
-    write(u, 'Household', ['JNJ', 'KMB', 'CLX', 'PG', 'UL', 'CL'])
-    write(u, 'Restaurants', ['MCD', 'SBUX'])
-    write(u, 'Healthcare', ['JNJ', 'PFE', 'ABBV'])
-    write(u, 'Sin stocks', ['MO', 'BTI', 'PM', 'UVV'])
-    write(u, 'Tech', ['IBM', 'AAPL', 'MSFT'])
-    write(u, 'My portfolio', ['JNJ', 'PEP', 'MMM', 'IBM', 'ABBV', 'MO'])
-
-if __name__ == '__main__':
-    main()
