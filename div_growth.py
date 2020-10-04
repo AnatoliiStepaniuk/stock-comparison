@@ -17,7 +17,7 @@ def _adjust_dividend(div, splits):
     return div[0], adjusted
 
 
-def div_growth(ticker, last_years):
+def div_years_and_growth(ticker, last_years):
     from_ = -2208996124 # 1900 year
     to_ = int(time.time_ns()/1000000000)
 
@@ -42,5 +42,8 @@ def div_growth(ticker, last_years):
             yearly_dividends[year] = 0
         yearly_dividends[year] += div
 
-    growth = exp_growth(list(yearly_dividends.values())[-last_years:])
-    return growth - 1 if growth != "N/A" else "N/A"
+    # growth = exp_growth(list(yearly_dividends.values())[-last_years:])
+    growth = exp_growth(list(yearly_dividends.values()))
+    growth = growth - 1 if growth != "N/A" else "N/A"
+    years = len(yearly_dividends)
+    return years, growth

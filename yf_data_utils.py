@@ -6,6 +6,10 @@ def dividend_growth(yfd):
     return yfd['dividend_growth']
 
 
+def dividend_years(yfd):
+    return yfd['dividend_years']
+
+
 def market_cap(yfd):
     return round(yfd['market_cap']/10**9, 0)
 
@@ -53,6 +57,7 @@ def debt_repay_years(yfd):
 market_cap_key = 'Market cap, B'
 net_income_key = 'Net income, B'
 dividend_growth_key = 'Dividend growth'
+dividend_years_key = 'Dividend years'
 dividend_return_key = 'Dividend yield'
 sales_growth_key = 'Sales growth'
 net_income_growth_key = 'Net income growth'
@@ -69,6 +74,7 @@ ROW_FUNCTIONS = {
     sales_growth_key: sales_growth,
     net_income_growth_key: net_income_growth,
     dividend_growth_key: dividend_growth,
+    dividend_years_key: dividend_years,
     debt_repay_years_key: debt_repay_years,
     equity_growth_key: equity_growth,
     roe_key: roe,
