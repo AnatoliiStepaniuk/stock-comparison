@@ -17,7 +17,7 @@ def linear_to_exp_growth(y):
 
 
 def exp_growth(y):
-    if len(y) == 0:
+    if len(y) < 2:
         return "N/A"
     popt, pcov = curve_fit(exp_func, range(1, len(y)+1), y)
     return popt[0]

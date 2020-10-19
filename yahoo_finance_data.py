@@ -9,10 +9,18 @@ LAST_DIVIDEND_GROWTH_YEARS = 10
 
 def yahoo_finance_data(ticker):
     resp = requests.get('https://finance.yahoo.com/quote/' + ticker)
-    js = json.loads(_get_json(resp.text))
+    _json = _get_json(resp.text)
+    if _json is None:
+        print("Could not get json for " + ticker)
+        return {}
+    js = json.loads(_json)
 
     bs_resp = requests.get('https://finance.yahoo.com/quote/' + ticker + '/balance-sheet?p=' + ticker)
-    bs_js = json.loads(_get_json(bs_resp.text))
+    _bs_json = _get_json(bs_resp.text)
+    if _bs_json is None:
+        print("Could not get balance sheet json for " + ticker)
+        return {}
+    bs_js = json.loads(_bs_json)
     div_years, div_growth = ('N/A', 'N/A') if _dividend_return(js) == 'N/A' else div_years_and_growth(ticker, LAST_DIVIDEND_GROWTH_YEARS)
     return {
         "eps": _eps(js),
@@ -36,6 +44,8 @@ def yahoo_finance_data(ticker):
 def _get_json(inp):
     start_str = 'root.App.main = '
     finish_str = '}(this))'
+    if not start_str in inp:
+        return
     index_from = inp.index(start_str) + len(start_str)
     index_to = inp.index(finish_str) - 2
     return inp[index_from: index_to]
@@ -114,6 +124,8 @@ def _debt(js):
 
 def _sales_growth(js):
     revenues = []
+    if 'financialsChart' not in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']:
+        return "N/A"
     for e in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']:
         revenues.append(e['revenue']['raw'])
     return linear_to_exp_growth(revenues)
@@ -121,6 +133,8 @@ def _sales_growth(js):
 
 def _net_income_growth(js):
     earnings = []
+    if 'financialsChart' not in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']:
+        return "N/A"
     for e in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']:
         earnings.append(e['earnings']['raw'])
     return linear_to_exp_growth(earnings)
@@ -136,6 +150,8 @@ def _equity_growth(bs_js):
 
 
 def _net_income(js):
+    if 'financialsChart' not in js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']:
+        return "N/A"
     arr = js['context']['dispatcher']['stores']['QuoteSummaryStore']['earnings']['financialsChart']['yearly']
     earnings = arr[len(arr)-1]['earnings']
     return earnings['raw'] if 'raw' in earnings else earnings

@@ -23,7 +23,7 @@ def net_income_growth(yfd):
 
 
 def net_income(yfd):
-    return round(yfd['net_income']/10**9, 2)
+    return round(yfd['net_income']/10**9, 2) if yfd['net_income'] != 'N/A' else 'N/A'
 
 
 def equity_growth(yfd):
@@ -39,7 +39,7 @@ def payout_ratio(yfd):
 
 
 def roe(yfd):
-    return yfd['net_income'] / yfd['equity']
+    return yfd['net_income'] / yfd['equity'] if yfd['net_income'] != "N/A" and yfd['equity'] != "N/A" else 'N/A'
 
 
 def debt_to_equity(yfd):
