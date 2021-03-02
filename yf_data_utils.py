@@ -34,6 +34,10 @@ def profit_margin(yfd):
     return yfd['profit_margin']
 
 
+def gross_margin(yfd):
+    return yfd['gross_margin']
+
+
 def payout_ratio(yfd):
     return yfd['payout_ratio']
 
@@ -63,6 +67,7 @@ sales_growth_key = 'Sales growth'
 net_income_growth_key = 'Net income growth'
 equity_growth_key = 'Total Equity growth'
 profit_margin_key = 'Profit margin'
+gross_margin_key = 'Gross margin'
 payout_ratio_key = 'Payout ratio'
 roe_key = 'ROE'
 debt_to_equity_key = 'Debt/Equity'
@@ -70,6 +75,7 @@ price_to_earnings_key = 'Price/Earnings'
 debt_repay_years_key = 'Debt repay, yrs'
 
 ROW_FUNCTIONS = {
+    gross_margin_key: gross_margin,
     profit_margin_key: profit_margin,
     sales_growth_key: sales_growth,
     net_income_growth_key: net_income_growth,

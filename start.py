@@ -3,7 +3,7 @@ from sheets_client import sheets_client
 from write import write
 
 client = sheets_client()
-spreadsheet_id = create_spread_sheet(client, 'Stock Comparison')
+spreadsheet_id = create_spread_sheet(client, 'Food/Drinks Test3')
 u = (client, spreadsheet_id)
 
 write(u, 'Food', ['PEP', 'KO', 'GIS', 'CPB', 'DANOY', 'NSRGY', 'KDP'])

@@ -38,6 +38,7 @@ def yahoo_finance_data(ticker):
         "net_income_growth": _net_income_growth(js),
         "equity": _equity(bs_js),
         "equity_growth": _equity_growth(bs_js),
+        "gross_margin": _gross_margin(js),
     }
 
 
@@ -106,6 +107,14 @@ def _profit_margin(js):
         return 'N/A'
     profit_margins = default_key_stats['profitMargins']
     return profit_margins['raw'] if 'raw' in profit_margins else 'N/A'
+
+
+def _gross_margin(js):
+    financial_data = js['context']['dispatcher']['stores']['QuoteSummaryStore']['financialData']
+    if 'grossMargins' not in financial_data:
+        return 'N/A'
+    gross_margins = financial_data['grossMargins']
+    return gross_margins['raw'] if 'raw' in gross_margins else 'N/A'
 
 
 def _payout_ratio(js):

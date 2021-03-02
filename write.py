@@ -13,9 +13,9 @@ def write(u, page, tickers):
     shm = SheetMeta(u[0], u[1], page)
     write_row_names(shm)
     write_data(shm, tickers)
-    format_percent(u, page_counter, 1, 5, 1, len(tickers)+1)
-    format_percent(u, page_counter, 7, 9, 1, len(tickers)+1)
-    format_percent(u, page_counter, 11, 13, 1, len(tickers)+1)
+    format_percent(u, page_counter, 1, 6, 1, len(tickers)+1)
+    format_percent(u, page_counter, 8, 10, 1, len(tickers)+1)
+    format_percent(u, page_counter, 13, 15, 1, len(tickers)+1)
     format_white_text_color(u, page_counter, 0, 1, 0, len(tickers)+1)
 
 
