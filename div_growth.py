@@ -31,6 +31,11 @@ def div_years_and_growth(ticker, last_years):
     splits = [(l.split(',')[0], (l.split(',')[1].split(':')[0], l.split(',')[1].split(':')[1])) for l in splits_raw]
     splits.sort(key=lambda t: t[0])
 
+    headers = {'user-agent': 'curl/7.64.1'}
+    div_url_new = f"https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?formatted=true&lang=en-US&region=US&includeAdjustedClose=true&interval=1d&period1={from_}&period2={to_}&events=capitalGain%7Cdiv%7Csplit&useYfid=true&corsDomain=finance.yahoo.com"
+    dividends_raw = requests.get(div_url_new, headers=headers).text.split('\n')[1:]
+
+
     adjusted_dividends = [_adjust_dividend(div, splits) for div in dividends]
 
     yearly_dividends = {}
